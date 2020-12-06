@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
         btn_rec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String greeting = "님 가입을 환영합니다";
-                Toast toast = Toast.makeText(getBaseContext(), greeting, Toast.LENGTH_SHORT);
-                toast.show();
+                Intent intent = new Intent(MainActivity.this, RecActivity.class);
+                startActivity(intent);
                 //Intent intent = new Intent(MainActivity.this, SubActivity.class);
                 //startActivity(intent);
             }

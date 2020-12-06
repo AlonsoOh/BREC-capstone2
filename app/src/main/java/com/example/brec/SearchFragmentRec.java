@@ -1,6 +1,8 @@
 package com.example.brec;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchFragment extends Fragment implements View.OnClickListener {
+public class SearchFragmentRec extends Fragment implements View.OnClickListener{
     private RecyclerView mRvBooks;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -35,10 +37,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private EditText mEtKeyword;
     private Button mBtnSearch;
+    private String result;
 
     private InputMethodManager mInputMethodManager;
 
-    public SearchFragment() {
+    public SearchFragmentRec() {
         // Required empty public constructor
     }
 
@@ -46,7 +49,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.fragment_movie, container,
+        final View root = inflater.inflate(R.layout.activity_rec, container,
                 false);
         setupRecyclerView(root);
         setupSearchView(root);
@@ -82,8 +85,17 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_search:
+
+                String keywords = mEtKeyword.getText().toString();
+                String url = "http://34.229.136.176:5000/recommend";
+                ContentValues val = new ContentValues();
+                val.put(keywords, "");
+                //AsyncTask를통해 http수행 - arguments주의
+                NetworkTask net = new NetworkTask(url, val);
+                //Toast.makeText(getContext(), "실패", Toast.LENGTH_SHORT).show();
+                net.execute();
                 hideKeyboard();
-                startSearch(mEtKeyword.getText().toString());
+                //startSearch(result);
                 break;
         }
     }
@@ -93,11 +105,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     public void showEmptyFieldMessage() {
-        Toast.makeText(getContext(), "검색어를 입력해주세요", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "원하는 키워드를 입력해주세요", Toast.LENGTH_SHORT).show();
     }
 
     public void showNotFoundMessage(String keyword) {
-        Toast.makeText(getContext(), "\'" + keyword + "\' 를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "해당 키워드에 대한 추천 도서를 찾을 수 없습니다", Toast.LENGTH_SHORT).show();
     }
 
     // 검색어가 입력되었는지 확인 후 영화 가져오기
@@ -113,7 +125,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     // 영화 가져오기
     public void getBooks(final String title) {
         ApiInterface apiInterface = ServiceGenerator.createService(ApiInterface.class);
-        Call<Book> call = apiInterface.getBooks(title, 100, 1);
+        Call<Book> call = apiInterface.getBooks(title, 1, 1);
         call.enqueue(new Callback<Book>() {
             @Override
             public void onResponse(Call<Book> call, Response<Book> response) {
@@ -134,5 +146,31 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 Log.e("검색실패", t.getMessage());
             }
         });
+    }
+
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+        private String url;
+        private ContentValues values;
+
+        public NetworkTask(String url, ContentValues values) {
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result; //요청결과 저장
+            RequestHttp requestHttp = new RequestHttp();
+            result = requestHttp.request(url, values);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            getBooks(s);
+            result = s;
+
+        }
     }
 }

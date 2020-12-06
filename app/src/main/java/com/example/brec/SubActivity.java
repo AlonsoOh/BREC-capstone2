@@ -14,29 +14,7 @@ public class SubActivity extends AppCompatActivity {
     private Button searchBtn;
     private String keyword;
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub);
 
-        searchBtn = findViewById(R.id.searchBtn);
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView searchText = (TextView) findViewById(R.id.searchText);
-                //final TextView searchResult = (TextView) findViewById(R.id.searchResult);
-                keyword = searchText.getText().toString();
-
-                Intent intent = new Intent(SubActivity.this, SubActivity.class);
-                intent.putExtra("keyword", keyword);
-                startActivity(intent);
-                //searchResult.setText(str);
-
-
-            }
-        });
-    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

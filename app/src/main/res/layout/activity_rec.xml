@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linear_view_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_search"
+            android:text="키워드 입력"
+            android:textSize="11dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text2"
+        android:text="당신께 추천하는 책"
+        android:fontFamily="@font/cafe24simplehae"
+        android:layout_width="match_parent"
+        android:textSize="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/linear_view_search"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/text2" />
+
+</RelativeLayout>

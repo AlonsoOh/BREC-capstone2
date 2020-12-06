@@ -11,6 +11,7 @@ public class LoginRequest extends StringRequest {
 
     //서버 URL 설정(php 파일 연동)
     final static private String URL = "http://alonso14.dothome.co.kr/Login.php";
+    //final static private String URL = "http://ubuntu@ec2-34-229-136-176.compute-1.amazonaws.com/Login.php";
     private Map<String, String> map;
 
     public LoginRequest(String UserEmail, String UserPwd, Response.Listener<String> listener) {
